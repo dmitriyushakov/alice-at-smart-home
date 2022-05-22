@@ -1,14 +1,14 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities.model
 
-enum class RangeUnit(val rangeName: String) {
+enum class RangeUnit(val rangeUnitName: String) {
     Percent("unit.percent"),
     TemperatureCelsius("unit.temperature.celsius"),
     TemperatureKelvin("unit.temperature.kelvin");
 
-    override fun toString() = rangeName
+    override fun toString() = rangeUnitName
 
     companion object {
-        private val nameToRangeUnit: Map<String, RangeUnit> = values().associateBy { it.rangeName }
+        private val nameToRangeUnit: Map<String, RangeUnit> = values().associateBy { it.rangeUnitName }
         fun getRangeUnit(rangeName: String) = nameToRangeUnit[rangeName] ?: error("Unknown range unit name - $rangeName!")
 
         val isPercentPredicate: (RangeUnit?) -> Boolean = { it == Percent }

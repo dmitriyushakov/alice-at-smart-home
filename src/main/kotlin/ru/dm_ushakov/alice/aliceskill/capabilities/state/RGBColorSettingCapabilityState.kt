@@ -8,7 +8,7 @@ private fun packRGB(red: Int, green: Int, blue: Int): Int {
     return (red shl 16) or (green shl 8) or blue
 }
 
-data class RGCColorSettingCapabilityState(val value: Int): BaseColorSettingCapabilityState() {
+data class RGBColorSettingCapabilityState(val value: Int): BaseColorSettingCapabilityState() {
     override val instance: String get() = "rgb"
 
     val red: Int get() = (value and 0xff0000) shr 16
