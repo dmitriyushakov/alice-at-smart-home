@@ -48,6 +48,7 @@ abstract class BaseCapability {
                     if (deviceException == null) {
                         put("status", "DONE")
                     } else {
+                        put("status", "ERROR")
                         put("error_code", deviceException.message)
                         deviceException.message?.let { put("error_message", it) }
                     }
