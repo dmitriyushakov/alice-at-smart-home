@@ -30,6 +30,9 @@ abstract class OnOffCapability: BaseCapability() {
 
     final override fun executeChangingCapabilityState(changeState: JsonNode) {
         val value = changeState["state"]["value"].booleanValue()
-        state = OnOffCapabilityState(value)
+
+        if (value != state.value) {
+            state = OnOffCapabilityState(value)
+        }
     }
 }

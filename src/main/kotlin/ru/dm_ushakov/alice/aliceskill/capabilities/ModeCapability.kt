@@ -52,6 +52,8 @@ abstract class ModeCapability: BaseCapability() {
 
         if (incomeInstance != instance) deviceError(InvalidAction, "This capability accept $instance instance. Got $incomeInstance.")
 
-        state = ModeCapabilityState(incomeInstance, incomeValue)
+        if (incomeValue != state.value) {
+            state = ModeCapabilityState(incomeInstance, incomeValue)
+        }
     }
 }

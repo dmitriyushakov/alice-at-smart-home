@@ -55,6 +55,8 @@ abstract class RangeCapability: BaseCapability() {
 
         if (instance != incomeInstance) deviceError(InvalidAction, "This capability expect instance - $instance. Got - $incomeValue.")
 
-        state = RangeCapabilityState(incomeInstance, incomeValue)
+        if (incomeValue != state.value) {
+            state = RangeCapabilityState(incomeInstance, incomeValue)
+        }
     }
 }

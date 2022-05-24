@@ -41,6 +41,8 @@ abstract class ToggleCapability: BaseCapability() {
 
         if (instance != incomeInstance) deviceError(InvalidAction, "This capability expect instance - $instance. Got - $incomeInstance.")
 
-        state = ToggleCapabilityState(incomeInstance, incomeValue)
+        if (incomeValue != state.value) {
+            state = ToggleCapabilityState(incomeInstance, incomeValue)
+        }
     }
 }
