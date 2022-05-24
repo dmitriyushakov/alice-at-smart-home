@@ -3,11 +3,15 @@ package ru.dm_ushakov.alice.aliceskill.capabilities
 import com.fasterxml.jackson.databind.JsonNode
 import ru.dm_ushakov.alice.aliceskill.error.DeviceErrorType
 import ru.dm_ushakov.alice.aliceskill.error.DeviceException
+import ru.dm_ushakov.alice.aliceskill.notifications.BasicNotificationEmitter
+import ru.dm_ushakov.alice.aliceskill.notifications.NotificationEmitter
 import ru.dm_ushakov.alice.aliceskill.util.json.*
 import java.io.PrintWriter
 import java.io.StringWriter
 
 abstract class BaseCapability {
+    val updateNotificationEmitter: NotificationEmitter<BaseCapability> = BasicNotificationEmitter()
+
     abstract val type: String
     abstract val retrievable: Boolean
     abstract val reportable: Boolean
