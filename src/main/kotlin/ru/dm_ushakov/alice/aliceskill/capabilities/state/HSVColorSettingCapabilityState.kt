@@ -1,5 +1,7 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities.state
 
+import ru.dm_ushakov.alice.aliceskill.error.invalidValue
+
 data class HSVColorSettingCapabilityState(
     val hue: Int,
     val saturation: Int,
@@ -8,8 +10,8 @@ data class HSVColorSettingCapabilityState(
     override val instance: String get() = "hsv"
 
     init {
-        if (hue !in 0..360) error("Hue should be in interval from 0 to 360!")
-        if (saturation !in 0..100) error("Saturation should be in interval from 0 to 100!")
-        if (value !in 0..100) error("Value should be in interval from 0 to 100!")
+        if (hue !in 0..360) invalidValue("Hue should be in interval from 0 to 360! Actual - $hue.")
+        if (saturation !in 0..100) invalidValue("Saturation should be in interval from 0 to 100! Actual - $saturation.")
+        if (value !in 0..100) invalidValue("Value should be in interval from 0 to 100! Actual - $value.")
     }
 }
