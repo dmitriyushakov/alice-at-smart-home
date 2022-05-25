@@ -9,18 +9,12 @@ import ru.dm_ushakov.alice.aliceskill.util.json.*
 import java.io.PrintWriter
 import java.io.StringWriter
 
-abstract class BaseCapability {
+abstract class BaseCapability: DeviceCapability {
     val updateNotificationEmitter: NotificationEmitter<BaseCapability> = BasicNotificationEmitter()
 
-    abstract val type: String
-    abstract val retrievable: Boolean
-    abstract val reportable: Boolean
+    protected abstract fun executeChangingCapabilityState(changeState: JsonNode)
 
-    abstract fun getDescriptionJson(): JsonNode
-    abstract fun getCapabilityStateJson(): JsonNode
-    abstract fun executeChangingCapabilityState(changeState: JsonNode)
-
-    protected fun changeCapabilityState(changeState: JsonNode): JsonNode {
+    final override fun changeCapabilityState(changeState: JsonNode): JsonNode {
         var deviceException: DeviceException? = null
         val instance: String = changeState.get("state").get("instance").asText()
 
