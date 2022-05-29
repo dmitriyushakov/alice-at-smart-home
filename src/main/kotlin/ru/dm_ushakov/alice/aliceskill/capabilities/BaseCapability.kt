@@ -8,7 +8,7 @@ import ru.dm_ushakov.alice.aliceskill.notifications.NotificationEmitter
 import ru.dm_ushakov.alice.aliceskill.util.json.*
 
 abstract class BaseCapability: DeviceCapability {
-    val updateNotificationEmitter: NotificationEmitter<BaseCapability> = BasicNotificationEmitter()
+    override val updateNotificationEmitter: NotificationEmitter<DeviceCapability> = BasicNotificationEmitter()
 
     protected abstract fun executeChangingCapabilityState(changeState: JsonNode)
 
