@@ -3,12 +3,15 @@ package ru.dm_ushakov.alice.aliceskill.capabilities
 import com.fasterxml.jackson.databind.JsonNode
 import ru.dm_ushakov.alice.aliceskill.capabilities.state.ToggleCapabilityState
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.ToggleFunction
+import ru.dm_ushakov.alice.aliceskill.devices.DeviceContentKey
 import ru.dm_ushakov.alice.aliceskill.error.DeviceErrorType.*
 import ru.dm_ushakov.alice.aliceskill.error.deviceError
 import ru.dm_ushakov.alice.aliceskill.util.json.*
 
 abstract class ToggleCapability: BaseCapability() {
     final override val type: String get() = "devices.capabilities.toggle"
+    final override val keys: List<DeviceContentKey> get() = listOf(DeviceContentKey(type, instance.functionName))
+
     abstract val instance: ToggleFunction
     abstract var state: ToggleCapabilityState
 

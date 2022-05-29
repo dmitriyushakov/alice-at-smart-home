@@ -2,10 +2,13 @@ package ru.dm_ushakov.alice.aliceskill.capabilities
 
 import com.fasterxml.jackson.databind.JsonNode
 import ru.dm_ushakov.alice.aliceskill.capabilities.state.OnOffCapabilityState
+import ru.dm_ushakov.alice.aliceskill.devices.DeviceContentKey
 import ru.dm_ushakov.alice.aliceskill.util.json.*
 
 abstract class OnOffCapability: BaseCapability() {
     final override val type: String get() = "devices.capabilities.on_off"
+    final override val keys: List<DeviceContentKey> get() = listOf(DeviceContentKey(type, "on"))
+
     abstract val split: Boolean
     abstract var state: OnOffCapabilityState
 

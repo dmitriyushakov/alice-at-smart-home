@@ -5,12 +5,15 @@ import ru.dm_ushakov.alice.aliceskill.capabilities.model.Range
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.RangeFunction
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.RangeUnit
 import ru.dm_ushakov.alice.aliceskill.capabilities.state.RangeCapabilityState
+import ru.dm_ushakov.alice.aliceskill.devices.DeviceContentKey
 import ru.dm_ushakov.alice.aliceskill.error.DeviceErrorType.*
 import ru.dm_ushakov.alice.aliceskill.error.deviceError
 import ru.dm_ushakov.alice.aliceskill.util.json.*
 
 abstract class RangeCapability: BaseCapability() {
     final override val type: String get() = "devices.capabilities.range"
+    final override val keys: List<DeviceContentKey> get() = listOf(DeviceContentKey(type, instance.functionName))
+
     abstract val instance: RangeFunction
     abstract val unit: RangeUnit?
     abstract val randomAccess: Boolean?

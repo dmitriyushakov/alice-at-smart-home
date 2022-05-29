@@ -6,8 +6,6 @@ import ru.dm_ushakov.alice.aliceskill.error.DeviceException
 import ru.dm_ushakov.alice.aliceskill.notifications.BasicNotificationEmitter
 import ru.dm_ushakov.alice.aliceskill.notifications.NotificationEmitter
 import ru.dm_ushakov.alice.aliceskill.util.json.*
-import java.io.PrintWriter
-import java.io.StringWriter
 
 abstract class BaseCapability: DeviceCapability {
     val updateNotificationEmitter: NotificationEmitter<BaseCapability> = BasicNotificationEmitter()

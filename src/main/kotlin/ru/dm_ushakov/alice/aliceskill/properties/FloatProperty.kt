@@ -1,19 +1,21 @@
 package ru.dm_ushakov.alice.aliceskill.properties
 
+import ru.dm_ushakov.alice.aliceskill.devices.DeviceContentKey
 import ru.dm_ushakov.alice.aliceskill.properties.model.FloatFunction
 import ru.dm_ushakov.alice.aliceskill.properties.model.FloatUnit
 import ru.dm_ushakov.alice.aliceskill.properties.state.FloatPropertyState
 import ru.dm_ushakov.alice.aliceskill.util.json.*
 
 abstract class FloatProperty: BaseProperty() {
-    override val type: String get() = "devices.properties.float"
+    final override val type: String get() = "devices.properties.float"
+    final override val keys: List<DeviceContentKey> get() = listOf(DeviceContentKey(type, instance.functionName))
 
     abstract val instance: FloatFunction
     abstract val unit: FloatUnit?
 
     abstract val state: FloatPropertyState
 
-    override fun getDescriptionJson() = makeJsonObject {
+    final override fun getDescriptionJson() = makeJsonObject {
         put("type", type)
         put("retrievable", retrievable)
         put("reportable", reportable)
@@ -24,7 +26,7 @@ abstract class FloatProperty: BaseProperty() {
         }
     }
 
-    override fun getStateJson() = makeJsonObject {
+    final override fun getStateJson() = makeJsonObject {
         put("type", type)
 
         putObject("state") {

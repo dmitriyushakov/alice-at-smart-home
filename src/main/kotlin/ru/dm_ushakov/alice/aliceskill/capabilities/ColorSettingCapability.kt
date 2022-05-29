@@ -6,12 +6,25 @@ import ru.dm_ushakov.alice.aliceskill.capabilities.model.ColorScene
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.Scene
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.TemperatureRange
 import ru.dm_ushakov.alice.aliceskill.capabilities.state.*
+import ru.dm_ushakov.alice.aliceskill.devices.DeviceContentKey
 import ru.dm_ushakov.alice.aliceskill.error.DeviceErrorType.*
 import ru.dm_ushakov.alice.aliceskill.error.deviceError
 import ru.dm_ushakov.alice.aliceskill.util.json.*
 
 abstract class ColorSettingCapability: BaseCapability() {
     final override val type: String get() = "devices.capabilities.color_setting"
+    final override val keys: List<DeviceContentKey> get() {
+        val keys = mutableListOf<DeviceContentKey>()
+        val colorModel = this.colorModel
+
+        if (colorModel == ColorModel.RGB) keys.add(DeviceContentKey(type, "rgb"))
+        else if(colorModel == ColorModel.HSV) keys.add(DeviceContentKey(type, "hsv"))
+        if (temperatureRange != null) keys.add(DeviceContentKey(type, "temperature_k"))
+        if (colorScene != null) keys.add(DeviceContentKey(type, "scene"))
+
+        return keys
+    }
+
     abstract val colorModel: ColorModel?
     abstract val temperatureRange: TemperatureRange?
     abstract val colorScene: ColorScene?

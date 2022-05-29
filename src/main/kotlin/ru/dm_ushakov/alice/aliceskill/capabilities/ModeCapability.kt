@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.JsonNode
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.Mode
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.ModeFunction
 import ru.dm_ushakov.alice.aliceskill.capabilities.state.ModeCapabilityState
+import ru.dm_ushakov.alice.aliceskill.devices.DeviceContentKey
 import ru.dm_ushakov.alice.aliceskill.error.DeviceErrorType.*
 import ru.dm_ushakov.alice.aliceskill.error.deviceError
 import ru.dm_ushakov.alice.aliceskill.util.json.*
 
 abstract class ModeCapability: BaseCapability() {
     final override val type: String get() = "devices.capabilities.mode"
+    final override val keys: List<DeviceContentKey> get() = listOf(DeviceContentKey(type, instance.modeFunctionName))
 
     abstract val instance: ModeFunction
     abstract val modes: List<Mode>
