@@ -8,5 +8,5 @@ interface DeviceProperty {
     val reportable: Boolean
 
     fun getDescriptionJson(): JsonNode
-    fun getCapabilityStateJson(): JsonNode
+    fun getStateJson(): JsonNode
 }

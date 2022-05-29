@@ -22,7 +22,7 @@ abstract class ToggleCapability: BaseCapability() {
         }
     }
 
-    final override fun getCapabilityStateJson() = makeJsonObject {
+    final override fun getStateJson() = makeJsonObject {
         put("type", type)
 
         putObject("state") {

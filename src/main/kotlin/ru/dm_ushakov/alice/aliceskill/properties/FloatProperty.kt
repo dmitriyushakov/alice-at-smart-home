@@ -24,7 +24,7 @@ abstract class FloatProperty: BaseProperty() {
         }
     }
 
-    override fun getCapabilityStateJson() = makeJsonObject {
+    override fun getStateJson() = makeJsonObject {
         put("type", type)
 
         putObject("state") {
