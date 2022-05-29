@@ -22,16 +22,13 @@ abstract class EventProperty: BaseProperty() {
         putObject("properties") {
             val instance = this@EventProperty.instance
             val events = this@EventProperty.events
+            if (events.isEmpty()) invalidValue("Event property should have at least one event!")
 
             put("instance", instance.functionName)
-            putArray("events") {
-                if (events.isEmpty()) invalidValue("Event property should have at least one event!")
-
-                for(event in events) {
-                    instance.validateEventType(event)
-                    addObject {
-                        put("value", event.eventTypeName)
-                    }
+            putArray("events", events) { event ->
+                instance.validateEventType(event)
+                addObject {
+                    put("value", event.eventTypeName)
                 }
             }
         }

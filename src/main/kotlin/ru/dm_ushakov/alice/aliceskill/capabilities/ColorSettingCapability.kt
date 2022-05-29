@@ -42,11 +42,9 @@ abstract class ColorSettingCapability: BaseCapability() {
                 haveParameters = true
 
                 putObject("color_scene") {
-                    putArray("scenes") {
-                        for (scene in scenes.scenes) {
-                            addObject().apply {
-                                put("id", scene.sceneName)
-                            }
+                    putArray("scenes", scenes.scenes) { scene ->
+                        addObject {
+                            put("id", scene.sceneName)
                         }
                     }
                 }

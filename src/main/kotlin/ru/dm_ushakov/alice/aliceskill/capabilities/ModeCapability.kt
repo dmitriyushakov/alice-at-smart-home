@@ -21,15 +21,14 @@ abstract class ModeCapability: BaseCapability() {
         put("reportable", reportable)
 
         putObject("parameters") {
-            put("instance", instance.modeFunctionName)
-            putArray("modes") {
-                val modesList = modes.toList()
-                if (modesList.isEmpty()) error("Modes list should have at least 1 element!")
+            val modesList = modes.toList()
+            if (modesList.isEmpty()) error("Modes list should have at least 1 element!")
 
-                for (mode in modesList) {
-                    addObject {
-                        put("value", mode.modeName)
-                    }
+            put("instance", instance.modeFunctionName)
+
+            putArray("modes", modesList) { mode ->
+                addObject {
+                    put("value", mode.modeName)
                 }
             }
         }

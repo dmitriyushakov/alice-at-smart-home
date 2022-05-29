@@ -14,6 +14,14 @@ fun ObjectNode.putArray(arrayName: String, builder: ArrayNode.() -> Unit) {
     putArray(arrayName).apply(builder)
 }
 
+fun <T> ObjectNode.putArray(arrayName: String, items: Iterable<T>, builder: ArrayNode.(T) -> Unit) {
+    val jsonArray = putArray(arrayName)
+
+    for (item in items) {
+        jsonArray.builder(item)
+    }
+}
+
 fun ArrayNode.addObject(builder: ObjectNode.() -> Unit) {
     addObject().apply(builder)
 }
