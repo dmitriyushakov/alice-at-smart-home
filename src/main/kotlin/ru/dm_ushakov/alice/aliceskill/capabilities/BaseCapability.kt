@@ -23,12 +23,7 @@ abstract class BaseCapability: DeviceCapability {
         } catch (ex: DeviceException) {
             deviceException = ex
         } catch (ex: Exception) {
-            val messageWriter = StringWriter()
-            val printMessageWriter = PrintWriter(messageWriter)
-            printMessageWriter.print("Internal capability exception - ")
-            ex.printStackTrace(printMessageWriter)
-            val message = messageWriter.toString()
-
+            val message = "Internal capability exception - " + ex.stackTraceToString()
             deviceException = DeviceException(DeviceErrorType.InternalError, message)
         }
 
