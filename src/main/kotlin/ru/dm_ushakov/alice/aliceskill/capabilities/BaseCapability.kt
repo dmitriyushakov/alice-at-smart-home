@@ -43,4 +43,7 @@ abstract class BaseCapability: DeviceCapability {
             }
         }
     }
+
+    override fun hashCode() = keys.sumOf { it.hashCode() }
+    override fun equals(other: Any?) = this === other
 }

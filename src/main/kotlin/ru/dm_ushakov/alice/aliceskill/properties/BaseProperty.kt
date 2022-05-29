@@ -5,4 +5,6 @@ import ru.dm_ushakov.alice.aliceskill.notifications.NotificationEmitter
 
 abstract class BaseProperty: DeviceProperty {
     override val updateNotificationEmitter: NotificationEmitter<DeviceProperty> = BasicNotificationEmitter()
+    override fun hashCode() = keys.sumOf { it.hashCode() }
+    override fun equals(other: Any?) = this === other
 }
