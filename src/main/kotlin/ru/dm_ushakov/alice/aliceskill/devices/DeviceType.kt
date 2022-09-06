@@ -1,6 +1,8 @@
 package ru.dm_ushakov.alice.aliceskill.devices
 
-enum class DeviceType(val deviceTypeName: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class DeviceType(@get:JsonValue val deviceTypeName: String) {
     Light("devices.types.light"),
     Socket("devices.types.socket"),
     Switch("devices.types.switch"),

@@ -1,11 +1,12 @@
-package ru.dm_ushakov.alice.aliceskill.devices
+package ru.dm_ushakov.alice.aliceskill.config
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
+import ru.dm_ushakov.alice.aliceskill.devices.Device
+import ru.dm_ushakov.alice.aliceskill.devices.Lifecycle
 import ru.dm_ushakov.alice.aliceskill.util.json.makeJsonObject
 import ru.dm_ushakov.alice.aliceskill.util.json.putArray
-import ru.dm_ushakov.alice.aliceskill.util.json.putObject
 
 class UserHome (
     val userId: String,

@@ -6,7 +6,6 @@ plugins {
 	war
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
-	kotlin("plugin.serialization") version "1.6.10"
 }
 
 group = "ru.dm_ushakov.alice"
@@ -21,8 +20,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
 	implementation("org.reflections:reflections:0.10.2")
+	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.3")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
