@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.io.BufferedInputStream
+import java.io.File
 import java.io.FileInputStream
 import java.security.KeyStore
 
@@ -24,12 +25,16 @@ open class ServletConfiguration(
     @Value("\${server.externalApiKeystore:external_api_keystore.jks}") private val keystorePath: String,
     @Value("\${server.externalApiPortEnabled:true}") private val externalApiInboundPortEnabled: Boolean,
     @Value("\${server.externalApiPort:null}") private val externalApiInboundPortProperty: String,
-    @Value("\${server.externalApiPortSecured:true}") private val externalApiInboundPortSecured: Boolean
+    @Value("\${server.externalApiPortSecured:false}") private val externalApiInboundPortSecured: Boolean,
+    @Value("\${skill.configuration:./configuration.yaml}") private val configLocationPath: String
     ) {
     private val externalApiInboundPort: Int by lazy {
         externalApiInboundPortProperty.let { if(it=="null") null else it.toInt() } ?:
         (if (externalApiInboundPortSecured) 9443 else 9000)
     }
+
+    @Bean
+    fun configurationFile() = File(configLocationPath)
 
     @Bean
     fun internalPort(): Int = serverPort
