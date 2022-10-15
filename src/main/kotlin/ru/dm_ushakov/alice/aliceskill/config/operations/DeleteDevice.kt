@@ -3,7 +3,6 @@ package ru.dm_ushakov.alice.aliceskill.config.operations
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
-import ru.dm_ushakov.alice.aliceskill.util.json.makeJsonObject
 
 class DeleteDevice(val userId: String, val deviceId: String): ConfigOperation() {
     override fun applyChanges(config: JsonNode) {

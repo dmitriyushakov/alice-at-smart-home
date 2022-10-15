@@ -25,5 +25,10 @@ enum class DeviceType(@get:JsonValue val deviceTypeName: String) {
     Dishwasher("devices.types.dishwasher"),
     Iron("devices.types.iron"),
     Sensor("devices.types.sensor"),
-    Other("devices.types.other")
+    Other("devices.types.other");
+
+    companion object {
+        private val deviceTypes: Map<String, DeviceType> = DeviceType.values().associateBy { it.deviceTypeName }
+        fun getDeviceType(key: String): DeviceType = deviceTypes[key] ?: error("Unknown device type - $key")
+    }
 }

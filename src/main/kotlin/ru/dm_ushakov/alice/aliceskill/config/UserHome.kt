@@ -1,5 +1,6 @@
 package ru.dm_ushakov.alice.aliceskill.config
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -43,6 +44,7 @@ class UserHome (
         }
     }
 
+    @JsonIgnore
     fun getDescriptionJson() = makeJsonObject {
         put("user_id", userId)
         putArray("devices", devices) {
@@ -50,6 +52,7 @@ class UserHome (
         }
     }
 
+    @JsonIgnore
     fun getStateJson() = makeJsonObject {
         putArray("devices", devices) {
             add(it.getStateJson())
