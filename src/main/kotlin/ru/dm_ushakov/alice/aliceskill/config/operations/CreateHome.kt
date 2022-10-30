@@ -22,6 +22,7 @@ class CreateHome(val userId: String): ConfigOperation() {
         homesArr.add(makeJsonObject {
             put("userId", userId)
             putArray("devices")
+            putArray("authorizationKeys")
         })
     }
 }

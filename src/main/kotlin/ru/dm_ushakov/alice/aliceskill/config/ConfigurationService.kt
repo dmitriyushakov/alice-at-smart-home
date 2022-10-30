@@ -1,9 +1,13 @@
 package ru.dm_ushakov.alice.aliceskill.config
 
 import com.fasterxml.jackson.databind.JsonNode
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 abstract class ConfigurationService {
     private var configuration: JsonNode? = null
+    private val lock: Lock = ReentrantLock()
 
     protected abstract fun basicConfiguration(): JsonNode
     protected abstract fun loadConfiguration(): JsonNode?
@@ -11,31 +15,35 @@ abstract class ConfigurationService {
     protected abstract fun saveConfiguration(configuration: JsonNode)
 
     fun getConfiguration(): SkillConfiguration {
-        var config = this.configuration
-        if (config == null) {
-            config = loadConfiguration()
+        lock.withLock {
+            var config = this.configuration
             if (config == null) {
-                config = basicConfiguration()
-                saveConfiguration(config)
+                config = loadConfiguration()
+                if (config == null) {
+                    config = basicConfiguration()
+                    saveConfiguration(config)
+                }
             }
-        }
-        configuration = config
+            configuration = config
 
-        return deserializeConfiguration(config)
+            return deserializeConfiguration(config)
+        }
     }
 
     fun applyChanges(configChanges: (JsonNode) -> Unit): SkillConfiguration {
-        var config = this.configuration
-        if (config == null) {
-            config = loadConfiguration()
+        lock.withLock {
+            var config = this.configuration
             if (config == null) {
-                config = basicConfiguration()
+                config = loadConfiguration()
+                if (config == null) {
+                    config = basicConfiguration()
+                }
             }
-        }
-        configChanges(config)
-        val deserializedConfig = deserializeConfiguration(config)
-        saveConfiguration(config)
+            configChanges(config)
+            val deserializedConfig = deserializeConfiguration(config)
+            saveConfiguration(config)
 
-        return deserializedConfig
+            return deserializedConfig
+        }
     }
 }

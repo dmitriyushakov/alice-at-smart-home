@@ -1,6 +1,7 @@
 package ru.dm_ushakov.alice.aliceskill.controllers
 
 import com.fasterxml.jackson.databind.JsonNode
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.*
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import ru.dm_ushakov.alice.aliceskill.capabilities.DeviceCapability
+import ru.dm_ushakov.alice.aliceskill.config.ConfigurationLifecycleService
 import ru.dm_ushakov.alice.aliceskill.config.ConfigurationService
 import ru.dm_ushakov.alice.aliceskill.config.SkillConfiguration
 import ru.dm_ushakov.alice.aliceskill.config.UserHome
@@ -17,15 +19,21 @@ import ru.dm_ushakov.alice.aliceskill.config.operations.*
 import ru.dm_ushakov.alice.aliceskill.controllers.requests.CreateOrUpdateDeviceRequest
 import ru.dm_ushakov.alice.aliceskill.devices.Device
 import ru.dm_ushakov.alice.aliceskill.properties.DeviceProperty
+import ru.dm_ushakov.alice.aliceskill.util.notFound
 
 @RestController
 @RequestMapping(path = ["/internal_api/config/"])
 class ConfigOperationsController(
-    val configurationService: ConfigurationService
+    @Autowired
+    val configurationService: ConfigurationService,
+    @Autowired
+    val configurationLifecycleService: ConfigurationLifecycleService
 ) {
     private val configuration: SkillConfiguration get() = configurationService.getConfiguration()
-    private fun apply(operation: (JsonNode) -> Unit) = configurationService.applyChanges(operation)
-    private fun notFound(message: String): Nothing = throw ResponseStatusException(NOT_FOUND, message)
+    private fun apply(operation: (JsonNode) -> Unit) {
+        configurationService.applyChanges(operation)
+        configurationLifecycleService.update()
+    }
 
     @RequestMapping(method = [GET], path = ["/"])
     fun getConfig(): SkillConfiguration {

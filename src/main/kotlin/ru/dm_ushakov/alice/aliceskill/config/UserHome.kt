@@ -11,21 +11,22 @@ import ru.dm_ushakov.alice.aliceskill.util.json.putArray
 
 class UserHome (
     val userId: String,
+    val authorizationKeys: List<String>,
     devices: List<Device>): Lifecycle {
     var devices: List<Device> = devices
         set(newDevices) {
             val oldDevicesSet = field.toSet()
             val newDevicesSet = newDevices.toSet()
 
-            for (device in newDevices) {
-                if (device !in oldDevicesSet) {
-                    device.onCreate()
-                }
-            }
-
             for (device in field) {
                 if (device !in newDevicesSet) {
                     device.onDestroy()
+                }
+            }
+
+            for (device in newDevices) {
+                if (device !in oldDevicesSet) {
+                    device.onCreate()
                 }
             }
 

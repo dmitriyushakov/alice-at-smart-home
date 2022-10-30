@@ -17,7 +17,7 @@ abstract class BaseDevice: Device {
         put("type", type.deviceTypeName)
 
         val capabilities = this@BaseDevice.capabilities
-        val properties = this@BaseDevice.capabilities
+        val properties = this@BaseDevice.properties
 
         if (capabilities.isNotEmpty()) {
             haveCapOrProp = true

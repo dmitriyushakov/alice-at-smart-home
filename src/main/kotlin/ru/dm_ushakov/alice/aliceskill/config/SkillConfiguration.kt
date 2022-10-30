@@ -8,6 +8,12 @@ class SkillConfiguration {
     private val homesMut: MutableMap<String, UserHome> = mutableMapOf()
     val homes: Map<String, UserHome> get() = homesMut.toMap()
 
+    fun getHomeByAuthKey(key: String) = homes
+        .asSequence()
+        .map { it.value }
+        .filter { it.authorizationKeys.any { authKey -> authKey == key } }
+        .firstOrNull() ?: error("Home with auth key \"$key\" not found!")
+
     fun add(home: UserHome) {
         homesMut[home.userId] = home
     }
