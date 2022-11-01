@@ -19,8 +19,8 @@ class ExternalApiHandlerInterceptor(
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         if (handler is HandlerMethod){
             val isExternalApi = handler.bean::class.annotations.any { it is ExternalApi }
-
-            val reqPort = request.serverPort
+            
+            val reqPort = request.localPort
             val isInternalPort = reqPort == internalPort
             val isExternalApiPort = reqPort == externalApiPort
 
