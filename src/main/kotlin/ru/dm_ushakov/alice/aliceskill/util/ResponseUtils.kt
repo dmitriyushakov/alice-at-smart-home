@@ -4,3 +4,4 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
 
 fun notFound(message: String): Nothing = throw ResponseStatusException(HttpStatus.NOT_FOUND, message)
+fun unauthorized(message: String): Nothing = throw ResponseStatusException(HttpStatus.UNAUTHORIZED, message)

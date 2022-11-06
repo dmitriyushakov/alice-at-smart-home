@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import ru.dm_ushakov.alice.aliceskill.annotation.ExternalApi
 import ru.dm_ushakov.alice.aliceskill.config.ConfigurationLifecycleService
+import ru.dm_ushakov.alice.aliceskill.util.authorization.cutAuthorizationHeaderValue
 import ru.dm_ushakov.alice.aliceskill.util.json.makeJsonObject
 import ru.dm_ushakov.alice.aliceskill.util.json.putArray
 import ru.dm_ushakov.alice.aliceskill.util.json.putObject
@@ -24,6 +25,8 @@ class SmartHomeAPIController(
     val configurationLifecycleService: ConfigurationLifecycleService
 ) {
     val configuration get() = configurationLifecycleService.configuration
+    private fun getHome(authHeader: String) =
+        configuration.getHomeByAuthKey(cutAuthorizationHeaderValue(authHeader))
 
     @RequestMapping(method = [RequestMethod.HEAD], path = [""])
     fun check() {
@@ -44,7 +47,7 @@ class SmartHomeAPIController(
         @RequestHeader(HttpHeaders.AUTHORIZATION) authorizationHeader: String,
         @RequestHeader("X-Request-Id")  reqId: String
     ): JsonNode {
-        val user = configuration.getHomeByAuthKey(authorizationHeader)
+        val user = getHome(authorizationHeader)
 
         return makeJsonObject {
             put("request_id", reqId)
@@ -58,7 +61,7 @@ class SmartHomeAPIController(
         @RequestHeader("X-Request-Id") reqId: String,
         @RequestBody requestBody: ObjectNode
     ): JsonNode {
-        val user = configuration.getHomeByAuthKey(authorizationHeader)
+        val user = getHome(authorizationHeader)
         val idToDevice = user.devices.associateBy { it.id }
         val devicesArr = requestBody["devices"] as? ArrayNode ?: error("\"devices\" field required!")
         val devices = devicesArr.map { it["id"].asText() as String }
@@ -82,8 +85,7 @@ class SmartHomeAPIController(
         @RequestHeader("X-Request-Id")  reqId: String,
         @RequestBody changeStateRequest: ObjectNode
     ): JsonNode {
-        // Header - Authorization, X-Request-Id
-        val user = configuration.getHomeByAuthKey(authorizationHeader)
+        val user = getHome(authorizationHeader)
 
         return makeJsonObject {
             put("request_id", reqId)

@@ -1,6 +1,7 @@
 package ru.dm_ushakov.alice.aliceskill.mvc
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
@@ -9,22 +10,25 @@ import org.springframework.web.servlet.HandlerInterceptor
 import ru.dm_ushakov.alice.aliceskill.annotation.ExternalApi
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import kotlin.reflect.KClass
 
 @Component
 class ExternalApiHandlerInterceptor(
     @Autowired val internalPort: Int,
     @Autowired val externalApiPort: Int
 ): HandlerInterceptor {
-
+    private val whiteList: List<KClass<*>> = listOf(BasicErrorController::class)
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         if (handler is HandlerMethod){
-            val isExternalApi = handler.bean::class.annotations.any { it is ExternalApi }
+            val beanClass = handler.bean::class
+            val isExternalApi = beanClass.annotations.any { it is ExternalApi }
             
             val reqPort = request.localPort
             val isInternalPort = reqPort == internalPort
             val isExternalApiPort = reqPort == externalApiPort
+            val isInWhiteList = whiteList.any { it === beanClass }
 
-            val allowed = (isExternalApi && isExternalApiPort) || ((!isExternalApi) && isInternalPort)
+            val allowed = isInWhiteList || (isExternalApi && isExternalApiPort) || ((!isExternalApi) && isInternalPort)
 
             if (!allowed) {
                 throw ResponseStatusException(HttpStatus.NOT_FOUND)

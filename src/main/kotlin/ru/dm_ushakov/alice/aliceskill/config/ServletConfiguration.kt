@@ -26,6 +26,8 @@ open class ServletConfiguration(
     @Value("\${server.externalApiPortEnabled:true}") private val externalApiInboundPortEnabled: Boolean,
     @Value("\${server.externalApiPort:null}") private val externalApiInboundPortProperty: String,
     @Value("\${server.externalApiPortSecured:false}") private val externalApiInboundPortSecured: Boolean,
+    @Value("\${oauth.clientId:null}") private val clientIdProperty: String,
+    @Value("\${oauth.clientSecret:null}") private val clientSecretProperty: String,
     @Value("\${skill.configuration:./configuration.yaml}") private val configLocationPath: String
     ) {
     private val externalApiInboundPort: Int by lazy {
@@ -41,6 +43,12 @@ open class ServletConfiguration(
 
     @Bean
     fun externalApiPort(): Int = if (externalApiInboundPortEnabled) externalApiInboundPort else serverPort
+
+    @Bean
+    fun clientId(): String? = if (clientIdProperty == "null") null else clientIdProperty
+
+    @Bean
+    fun clientSecret(): String? = if (clientSecretProperty == "null") null else clientSecretProperty
 
     @Bean
     fun servletContainer(): ServletWebServerFactory {

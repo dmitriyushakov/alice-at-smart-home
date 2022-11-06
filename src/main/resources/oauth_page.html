@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Skill authorization</title>
+    </head>
+    <body>
+        <h1>Skill authorization</h1>
+        <p>Click "Join" in configuration interface.</p>
+        <script>
+            function getUrlForCode(code) {
+                let params = new URLSearchParams(window.location.search);
+                let newParams = new URLSearchParams()
+                let redirectUri = params.get("redirect_uri")
+
+                newParams.append("code", code);
+                if (params.has("state")) {
+                    newParams.append("state", params.get("state"));
+                }
+                if (params.has("client_id")) {
+                    newParams.append("client_id", params.get("client_id"));
+                }
+                if (params.has("scope")) {
+                    newParams.append("scope", params.get("scope"));
+                }
+
+                return redirectUri + "?" + newParams.toString();
+            }
+
+            function generateCode(callback) {
+                let params = new URLSearchParams(window.location.search);
+                let clientId = params.get("client_id");
+                let genParams = new URLSearchParams()
+                genParams.append("client_id", clientId);
+                let eventSource = new EventSource("/oauth/generate_code?" + genParams.toString());
+
+                eventSource.onmessage = function(event) {
+                    callback(event.data);
+                }
+
+                eventSource.onerror = function(event) {
+                    console.log("Error in eventsource. Restarting connect...");
+                    generateCode(callback);
+                }
+            }
+
+            function redirectToService(code) {
+                let url = getUrlForCode(code);
+                window.location = url;
+            }
+
+            window.onload = function() {
+                generateCode(redirectToService);
+            }
+        </script>
+    </body>
+</html>
