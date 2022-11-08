@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import ru.dm_ushakov.alice.aliceskill.annotation.ExternalApi
 import ru.dm_ushakov.alice.aliceskill.config.ConfigurationLifecycleService
+import ru.dm_ushakov.alice.aliceskill.config.ConfigurationService
+import ru.dm_ushakov.alice.aliceskill.config.operations.UnlinkAuthorizationToken
 import ru.dm_ushakov.alice.aliceskill.util.authorization.cutAuthorizationHeaderValue
 import ru.dm_ushakov.alice.aliceskill.util.json.makeJsonObject
 import ru.dm_ushakov.alice.aliceskill.util.json.putArray
@@ -21,6 +23,8 @@ import ru.dm_ushakov.alice.aliceskill.util.json.putObject
 @RequestMapping(path = ["/alice/v1.0"])
 @ExternalApi
 class SmartHomeAPIController(
+    @Autowired
+    val configurationService: ConfigurationService,
     @Autowired
     val configurationLifecycleService: ConfigurationLifecycleService
 ) {
@@ -38,8 +42,8 @@ class SmartHomeAPIController(
         @RequestHeader(HttpHeaders.AUTHORIZATION) authorizationHeader: String,
         @RequestHeader("X-Request-Id")  reqId: String
     ) {
-        // Header - Authorization, X-Request-Id
-        // TODO: revoke authorization token.
+        configurationService.applyChanges(UnlinkAuthorizationToken(cutAuthorizationHeaderValue(authorizationHeader)))
+        configurationLifecycleService.update()
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/user/devices"])
