@@ -3,7 +3,9 @@ package ru.dm_ushakov.alice.aliceskill.reflection
 import org.reflections.Reflections
 import org.reflections.util.ConfigurationBuilder
 import ru.dm_ushakov.alice.aliceskill.annotation.ComponentName
+import ru.dm_ushakov.alice.aliceskill.annotation.EntityType
 import ru.dm_ushakov.alice.aliceskill.capabilities.*
+import ru.dm_ushakov.alice.aliceskill.config.CustomEntity
 import ru.dm_ushakov.alice.aliceskill.properties.EventProperty
 import ru.dm_ushakov.alice.aliceskill.properties.FloatProperty
 import kotlin.reflect.KClass
@@ -26,6 +28,22 @@ object ComponentsRegistry {
     val modeCapClasses = findClasses(ModeCapability::class)
     val eventPropClasses = findClasses(EventProperty::class)
     val floatPropClasses = findClasses(FloatProperty::class)
+
+    val customEntityClasses = reflections.getSubTypesOf(CustomEntity::class.java).mapNotNull {
+        val componentName = it.annotations.mapNotNull { annotation -> (annotation as? ComponentName)?.name }.firstOrNull()
+        if (componentName == null) {
+            null
+        } else {
+            it?.let { cls -> componentName to cls }
+        }
+    }.groupBy({ it.first }, { it.second }).map { it.key to it.value.mapNotNull { cls ->
+        val entityType = cls.annotations.mapNotNull { annotation -> (annotation as? EntityType)?.typeName }.firstOrNull()
+        if (entityType == null) {
+            null
+        } else {
+            cls.let { cls -> entityType to cls }
+        }
+    }.toMap() }.toMap()
 
     val capClasses = mapOf(
         "devices.capabilities.on_off" to onOffCapClasses,

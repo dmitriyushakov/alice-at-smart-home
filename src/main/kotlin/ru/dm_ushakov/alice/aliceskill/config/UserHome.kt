@@ -12,7 +12,8 @@ import ru.dm_ushakov.alice.aliceskill.util.json.putArray
 class UserHome (
     val userId: String,
     val authorizationKeys: List<String>,
-    devices: List<Device>): Lifecycle {
+    devices: List<Device>,
+    customEntities: List<CustomEntity>): Lifecycle {
     var devices: List<Device> = devices
         set(newDevices) {
             val oldDevicesSet = field.toSet()
@@ -33,15 +34,42 @@ class UserHome (
             field = newDevices.toList()
         }
 
+    var customEntities: List<CustomEntity> = customEntities
+        set(newEntities) {
+            val oldEntitiesSet = field.toSet()
+            val newEntitiesSet = newEntities.toSet()
+
+            for (entity in field) {
+                if (entity !in newEntitiesSet) {
+                    entity.onDestroy()
+                }
+            }
+
+            for (entity in newEntities) {
+                if (entity !in oldEntitiesSet) {
+                    entity.onCreate()
+                }
+            }
+
+            field = newEntities.toList()
+        }
+
     override fun onCreate() {
         for (device in devices) {
             device.onCreate()
+        }
+
+        for (entity in customEntities) {
+            entity.onCreate()
         }
     }
 
     override fun onDestroy() {
         for (device in devices) {
             device.onDestroy()
+        }
+        for (entity in customEntities) {
+            entity.onDestroy()
         }
     }
 
