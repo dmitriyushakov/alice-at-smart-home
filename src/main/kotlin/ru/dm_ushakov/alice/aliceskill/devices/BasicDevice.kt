@@ -1,9 +1,11 @@
 package ru.dm_ushakov.alice.aliceskill.devices
 
 import ru.dm_ushakov.alice.aliceskill.capabilities.DeviceCapability
+import ru.dm_ushakov.alice.aliceskill.config.UserHome
 import ru.dm_ushakov.alice.aliceskill.notifications.BasicNotificationEmitter
 import ru.dm_ushakov.alice.aliceskill.notifications.FunctionNotificationReceiver
 import ru.dm_ushakov.alice.aliceskill.properties.DeviceProperty
+import ru.dm_ushakov.alice.aliceskill.util.onceInit
 
 class BasicDevice(
     override val id: String,
@@ -23,6 +25,8 @@ class BasicDevice(
     }
 
     override val updateNotificationEmitter: BasicNotificationEmitter<Device> = BasicNotificationEmitter()
+
+    override var home: UserHome by onceInit()
 
     override var capabilities: List<DeviceCapability> = capabilities
         set(value) {

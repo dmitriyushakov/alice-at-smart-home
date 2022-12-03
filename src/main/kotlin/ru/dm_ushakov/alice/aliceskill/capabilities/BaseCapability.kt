@@ -1,14 +1,25 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities
 
 import com.fasterxml.jackson.databind.JsonNode
+import ru.dm_ushakov.alice.aliceskill.config.CustomEntity
+import ru.dm_ushakov.alice.aliceskill.config.UserHome
+import ru.dm_ushakov.alice.aliceskill.devices.Device
 import ru.dm_ushakov.alice.aliceskill.error.DeviceErrorType
 import ru.dm_ushakov.alice.aliceskill.error.DeviceException
 import ru.dm_ushakov.alice.aliceskill.notifications.BasicNotificationEmitter
 import ru.dm_ushakov.alice.aliceskill.notifications.NotificationEmitter
 import ru.dm_ushakov.alice.aliceskill.util.json.*
+import ru.dm_ushakov.alice.aliceskill.util.onceInit
+import kotlin.reflect.KClass
 
 abstract class BaseCapability: DeviceCapability {
     override val updateNotificationEmitter: NotificationEmitter<DeviceCapability> = BasicNotificationEmitter()
+
+    override var home: UserHome by onceInit()
+    override var device: Device by onceInit()
+
+    fun <T:CustomEntity> getCustomEntity(klass: KClass<T>, entityId: String) =
+        home.getCustomEntity(klass, entityId)
 
     protected abstract fun executeChangingCapabilityState(changeState: JsonNode)
 

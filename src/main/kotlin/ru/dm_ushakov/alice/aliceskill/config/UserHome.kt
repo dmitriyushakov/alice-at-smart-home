@@ -8,6 +8,7 @@ import ru.dm_ushakov.alice.aliceskill.devices.Device
 import ru.dm_ushakov.alice.aliceskill.devices.Lifecycle
 import ru.dm_ushakov.alice.aliceskill.util.json.makeJsonObject
 import ru.dm_ushakov.alice.aliceskill.util.json.putArray
+import kotlin.reflect.KClass
 
 class UserHome (
     val userId: String,
@@ -33,6 +34,13 @@ class UserHome (
 
             field = newDevices.toList()
         }
+
+
+    fun <T:CustomEntity> getCustomEntity(klass: KClass<T>, entityId: String) =
+        customEntities.asSequence()
+            .filter { it.entityId == entityId && it::class == klass }
+            .mapNotNull { it as? T }
+            .firstOrNull()
 
     var customEntities: List<CustomEntity> = customEntities
         set(newEntities) {
