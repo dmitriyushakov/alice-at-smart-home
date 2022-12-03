@@ -8,7 +8,7 @@ class BasicRangeStateMapping(
     val pointRequired: Boolean): StateMapping<RangeCapabilityState, RangeCapability> {
     private fun Double.isInteger(): Boolean = !isInfinite() && this % 1.0 == 0.0
 
-    override fun convertTo(state: RangeCapabilityState, capability: RangeCapability): String {
+    override fun convertFromState(state: RangeCapabilityState, capability: RangeCapability): String {
         val stateValue = state.value
         return if (intRequired || !pointRequired && stateValue.isInteger()) {
             stateValue.toLong().toString()
@@ -17,7 +17,7 @@ class BasicRangeStateMapping(
         }
     }
 
-    override fun convertTo(stateString: String, capability: RangeCapability): RangeCapabilityState {
+    override fun convertToState(stateString: String, capability: RangeCapability): RangeCapabilityState {
         return RangeCapabilityState(
             instance = capability.instance,
             value = stateString.toDouble()

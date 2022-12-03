@@ -16,7 +16,7 @@ class BasicColorStateMapping: StateMapping<BaseColorSettingCapabilityState, Colo
         return Triple(a, b, c)
     }
 
-    override fun convertTo(state: BaseColorSettingCapabilityState, capability: ColorSettingCapability): String {
+    override fun convertFromState(state: BaseColorSettingCapabilityState, capability: ColorSettingCapability): String {
         return when(state) {
             is HSVColorSettingCapabilityState -> with(state) { "$hue,$saturation,$value" }
             is RGBColorSettingCapabilityState -> with(state) { "$red,$green,$blue" }
@@ -26,7 +26,7 @@ class BasicColorStateMapping: StateMapping<BaseColorSettingCapabilityState, Colo
         }
     }
 
-    override fun convertTo(stateString: String, capability: ColorSettingCapability): BaseColorSettingCapabilityState {
+    override fun convertToState(stateString: String, capability: ColorSettingCapability): BaseColorSettingCapabilityState {
         val tripleValues = stateString.toIntTripleOrNull()
         val colorModel = capability.colorModel
 
