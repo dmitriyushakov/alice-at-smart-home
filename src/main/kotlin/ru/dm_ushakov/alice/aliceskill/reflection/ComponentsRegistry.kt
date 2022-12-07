@@ -6,6 +6,8 @@ import ru.dm_ushakov.alice.aliceskill.annotation.ComponentName
 import ru.dm_ushakov.alice.aliceskill.annotation.EntityType
 import ru.dm_ushakov.alice.aliceskill.capabilities.*
 import ru.dm_ushakov.alice.aliceskill.config.CustomEntity
+import ru.dm_ushakov.alice.aliceskill.devices.Lifecycle
+import ru.dm_ushakov.alice.aliceskill.mappings.*
 import ru.dm_ushakov.alice.aliceskill.properties.EventProperty
 import ru.dm_ushakov.alice.aliceskill.properties.FloatProperty
 import kotlin.reflect.KClass
@@ -57,6 +59,18 @@ object ComponentsRegistry {
         "devices.properties.float" to floatPropClasses,
         "devices.properties.event" to eventPropClasses
     )
+
+    val stateMappingImplementations =
+        listOf(
+            OnOffStateMapping::class, ToggleStateMapping::class, ModeStateMapping::class, ColorStateMapping::class,
+            EventPropertyStateMapping::class, FloatPropertyStateMapping::class
+        ).associateWith { keyClass ->
+            reflections.getSubTypesOf(keyClass.java)
+                .mapNotNull { impl ->
+                    impl.annotations.firstNotNullOfOrNull { anno -> (anno as? ComponentName)?.name }?.let { comp -> comp to impl }
+                }
+                .toMap()
+        }
 
     private object ReflectionsHolder {
         val reflections = Reflections(ConfigurationBuilder().apply {

@@ -13,7 +13,8 @@ import ru.dm_ushakov.alice.aliceskill.util.onceInit
 import kotlin.reflect.KClass
 
 abstract class BaseCapability: DeviceCapability {
-    override val updateNotificationEmitter: NotificationEmitter<DeviceCapability> = BasicNotificationEmitter()
+    private val notificationSender = BasicNotificationEmitter<DeviceCapability>()
+    override val updateNotificationEmitter: NotificationEmitter<DeviceCapability> get() = notificationSender
 
     override var home: UserHome by onceInit()
     override var device: Device by onceInit()
@@ -53,6 +54,10 @@ abstract class BaseCapability: DeviceCapability {
                 }
             }
         }
+    }
+
+    protected fun sendNotification() {
+        notificationSender.sendNotification(this)
     }
 
     override fun hashCode() = keys.sumOf { it.hashCode() }

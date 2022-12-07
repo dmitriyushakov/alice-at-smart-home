@@ -1,0 +1,6 @@
+package ru.dm_ushakov.alice.aliceskill.mappings
+
+import ru.dm_ushakov.alice.aliceskill.capabilities.ColorSettingCapability
+import ru.dm_ushakov.alice.aliceskill.capabilities.state.BaseColorSettingCapabilityState
+
+interface ColorStateMapping: StateMapping<BaseColorSettingCapabilityState, ColorSettingCapability>

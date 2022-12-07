@@ -8,16 +8,22 @@ import ru.dm_ushakov.alice.aliceskill.capabilities.DeviceCapability
 import ru.dm_ushakov.alice.aliceskill.config.CustomEntity
 import ru.dm_ushakov.alice.aliceskill.devices.BasicDevice
 import ru.dm_ushakov.alice.aliceskill.devices.Device
+import ru.dm_ushakov.alice.aliceskill.mappings.*
 import ru.dm_ushakov.alice.aliceskill.properties.DeviceProperty
+import ru.dm_ushakov.alice.aliceskill.serialization.state.*
 
-private fun createSkillModule(): Module {
-    val skillModule = SimpleModule()
-    skillModule.addAbstractTypeMapping(Device::class.java, BasicDevice::class.java)
-    skillModule.addDeserializer(DeviceCapability::class.java, DeviceCapabilityDeserializer())
-    skillModule.addDeserializer(DeviceProperty::class.java, DevicePropertyDeserializer())
-    skillModule.addDeserializer(CustomEntity::class.java, CustomEntityDeserializer())
-
-    return skillModule
+private fun createSkillModule(): Module = SimpleModule().apply {
+    addAbstractTypeMapping(Device::class.java, BasicDevice::class.java)
+    addDeserializer(DeviceCapability::class.java, DeviceCapabilityDeserializer())
+    addDeserializer(DeviceProperty::class.java, DevicePropertyDeserializer())
+    addDeserializer(CustomEntity::class.java, CustomEntityDeserializer())
+    addDeserializer(OnOffStateMapping::class.java, OnOffStateMappingDeserializer())
+    addDeserializer(ToggleStateMapping::class.java, ToggleStateMappingDeserializer())
+    addDeserializer(RangeStateMapping::class.java, RangeStateMappingDeserializer())
+    addDeserializer(ModeStateMapping::class.java, ModeStateMappingDeserializer())
+    addDeserializer(ColorStateMapping::class.java, ColorStateMappingDeserializer())
+    addDeserializer(EventPropertyStateMapping::class.java, EventPropertyStateMappingDeserializer())
+    addDeserializer(FloatPropertyStateMapping::class.java, FloatPropertyStateMappingDeserializer())
 }
 
 private fun createYamlObjectMapper(): ObjectMapper {

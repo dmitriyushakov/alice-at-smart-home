@@ -1,13 +1,16 @@
-package ru.dm_ushakov.alice.aliceskill.mappings
+package ru.dm_ushakov.alice.aliceskill.mappings.basic
 
+import ru.dm_ushakov.alice.aliceskill.annotation.ComponentName
 import ru.dm_ushakov.alice.aliceskill.capabilities.ColorSettingCapability
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.ColorModel.*
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.Scene
 import ru.dm_ushakov.alice.aliceskill.capabilities.state.*
 import ru.dm_ushakov.alice.aliceskill.error.DeviceErrorType
 import ru.dm_ushakov.alice.aliceskill.error.deviceError
+import ru.dm_ushakov.alice.aliceskill.mappings.ColorStateMapping
 
-class BasicColorStateMapping: StateMapping<BaseColorSettingCapabilityState, ColorSettingCapability> {
+@ComponentName("basic")
+class BasicColorStateMapping: ColorStateMapping {
     private fun String.toIntTripleOrNull(): Triple<Int, Int, Int>? {
         val parts = split(',')
         if (parts.size != 3) return null

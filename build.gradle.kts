@@ -23,6 +23,7 @@ dependencies {
 	implementation("org.reflections:reflections:0.10.2")
 	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.3")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
+	implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

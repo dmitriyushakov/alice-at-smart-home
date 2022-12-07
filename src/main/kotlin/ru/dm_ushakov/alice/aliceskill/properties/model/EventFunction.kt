@@ -3,16 +3,16 @@ package ru.dm_ushakov.alice.aliceskill.properties.model
 import ru.dm_ushakov.alice.aliceskill.error.invalidValue
 import ru.dm_ushakov.alice.aliceskill.properties.model.EventType.*
 
-enum class EventFunction(val functionName: String, val allowedEventTypes: List<EventType>) {
-    Vibration("vibration", listOf(Tilt, Fall, EventType.Vibration)),
-    Open("open", listOf(Opened, Closed)),
-    Button("button", listOf(Click, DoubleClick, LongPress)),
-    Motion("motion", listOf(Detected, NotDetected)),
-    Smoke("smoke", listOf(Detected, NotDetected, High)),
-    Gas("gas", listOf(Detected, NotDetected, High)),
-    BatteryLevel("battery_level", listOf(Normal, Low)),
-    WaterLevel("water_level", listOf(Normal, Low)),
-    WaterLeak("water_leak", listOf(Dry, Leak));
+enum class EventFunction(val functionName: String, val defaultEventType: EventType, val allowedEventTypes: List<EventType>) {
+    Vibration("vibration", Tilt, listOf(Tilt, Fall, EventType.Vibration)),
+    Open("open", Closed, listOf(Opened, Closed)),
+    Button("button", Click, listOf(Click, DoubleClick, LongPress)),
+    Motion("motion", NotDetected, listOf(Detected, NotDetected)),
+    Smoke("smoke", NotDetected, listOf(Detected, NotDetected, High)),
+    Gas("gas", NotDetected, listOf(Detected, NotDetected, High)),
+    BatteryLevel("battery_level", Normal, listOf(Normal, Low)),
+    WaterLevel("water_level", Normal, listOf(Normal, Low)),
+    WaterLeak("water_leak", Dry, listOf(Dry, Leak));
 
     override fun toString() = functionName
 
