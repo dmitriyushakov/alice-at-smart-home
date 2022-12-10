@@ -1,11 +1,15 @@
 package ru.dm_ushakov.alice.aliceskill.devices
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import ru.dm_ushakov.alice.aliceskill.capabilities.DeviceCapability
 import ru.dm_ushakov.alice.aliceskill.config.UserHome
 import ru.dm_ushakov.alice.aliceskill.notifications.BasicNotificationEmitter
 import ru.dm_ushakov.alice.aliceskill.notifications.FunctionNotificationReceiver
 import ru.dm_ushakov.alice.aliceskill.properties.DeviceProperty
 import ru.dm_ushakov.alice.aliceskill.util.onceInit
+
+private val logger: Logger = LoggerFactory.getLogger(BasicDevice::class.java)
 
 class BasicDevice(
     override val id: String,
@@ -79,13 +83,21 @@ class BasicDevice(
             afterCreate = true
 
             for (capability in capabilities) {
-                capability.updateNotificationEmitter.subscribe(capabilityUpdateNotificationReceiver)
-                capability.onCreate()
+                try {
+                    capability.updateNotificationEmitter.subscribe(capabilityUpdateNotificationReceiver)
+                    capability.onCreate()
+                } catch (ex: Exception) {
+                    logger.error("Failed to initialize \"${capability.type}\" capability in \"$name\" ($id) device from \"${home.userId}\" home.", ex)
+                }
             }
 
             for (property in properties) {
-                property.updateNotificationEmitter.subscribe(propertyUpdateNotificationReceiver)
-                property.onCreate()
+                try {
+                    property.updateNotificationEmitter.subscribe(propertyUpdateNotificationReceiver)
+                    property.onCreate()
+                } catch (ex: Exception) {
+                    logger.error("Failed to initialize \"${property.type}\" property in \"$name\" ($id) device from \"${home.userId}\" home.", ex)
+                }
             }
         }
     }
@@ -94,11 +106,19 @@ class BasicDevice(
         synchronized(this) {
             if (afterCreate) {
                 for (capability in capabilities) {
-                    capability.onDestroy()
+                    try {
+                        capability.onDestroy()
+                    } catch (ex: Exception) {
+                        logger.error("Failed to destroy \"${capability.type}\" capability in \"$name\" ($id) device from \"${home.userId}\" home.", ex)
+                    }
                 }
 
                 for (property in properties) {
-                    property.onDestroy()
+                    try {
+                        property.onDestroy()
+                    } catch (ex: Exception) {
+                        logger.error("Failed to destroy \"${property.type}\" property in \"$name\" ($id) device from \"${home.userId}\" home.", ex)
+                    }
                 }
             }
         }

@@ -4,11 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import ru.dm_ushakov.alice.aliceskill.devices.Device
 import ru.dm_ushakov.alice.aliceskill.devices.Lifecycle
 import ru.dm_ushakov.alice.aliceskill.util.json.makeJsonObject
 import ru.dm_ushakov.alice.aliceskill.util.json.putArray
 import kotlin.reflect.KClass
+
+private val logger: Logger = LoggerFactory.getLogger(UserHome::class.java)
 
 class UserHome (
     val userId: String,
@@ -63,21 +67,30 @@ class UserHome (
         }
 
     override fun onCreate() {
-        for (device in devices) {
-            device.onCreate()
+        for (entity in customEntities) {
+            try {
+                entity.onCreate()
+            } catch (ex: Exception) {
+                logger.error("Failed to initialize \"${entity.entityId}\" entity in \"$userId\" home.", ex)
+            }
         }
 
-        for (entity in customEntities) {
-            entity.onCreate()
+        for (device in devices) {
+            device.onCreate()
         }
     }
 
     override fun onDestroy() {
+        for (entity in customEntities) {
+            try {
+                entity.onDestroy()
+            } catch (ex: Exception) {
+                logger.error("Failed to destroy \"${entity.entityId}\" entity in \"$userId\" home.", ex)
+            }
+        }
+
         for (device in devices) {
             device.onDestroy()
-        }
-        for (entity in customEntities) {
-            entity.onDestroy()
         }
     }
 
