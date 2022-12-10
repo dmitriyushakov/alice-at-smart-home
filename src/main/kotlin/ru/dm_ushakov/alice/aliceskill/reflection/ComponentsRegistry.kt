@@ -62,8 +62,8 @@ object ComponentsRegistry {
 
     val stateMappingImplementations =
         listOf(
-            OnOffStateMapping::class, ToggleStateMapping::class, ModeStateMapping::class, ColorStateMapping::class,
-            EventPropertyStateMapping::class, FloatPropertyStateMapping::class
+            OnOffStateMapping::class, ToggleStateMapping::class, RangeStateMapping::class, ModeStateMapping::class,
+            ColorStateMapping::class, EventPropertyStateMapping::class, FloatPropertyStateMapping::class
         ).associateWith { keyClass ->
             reflections.getSubTypesOf(keyClass.java)
                 .mapNotNull { impl ->

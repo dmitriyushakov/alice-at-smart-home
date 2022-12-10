@@ -49,7 +49,7 @@ abstract class ModeCapability: BaseCapability() {
         val incomeState = changeState["state"]
 
         val incomeInstance = ModeFunction.getModeFunction(incomeState["instance"].asText())
-        val incomeValue = Mode.getMode(changeState["value"].asText())
+        val incomeValue = Mode.getMode(incomeState["value"].asText())
 
         if (incomeInstance != instance) deviceError(InvalidAction, "This capability accept $instance instance. Got $incomeInstance.")
 

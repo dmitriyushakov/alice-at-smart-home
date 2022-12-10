@@ -1,8 +1,9 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities.model
 
+import com.fasterxml.jackson.annotation.JsonValue
 import ru.dm_ushakov.alice.aliceskill.capabilities.model.Mode.*
 
-enum class ModeFunction(val modeFunctionName: String, val recommendedModes: List<Mode>) {
+enum class ModeFunction(@get:JsonValue val modeFunctionName: String, val recommendedModes: List<Mode>) {
     CleanupMode("cleanup_mode", listOf(Auto, Eco, Express, Normal, Quiet)),
     CoffeeMode("coffee_mode", listOf(Americano, Cappuccino, DoubleEspresso, Espresso, Latte)),
     Dishwashing("dishwashing", listOf(Auto, Eco, Express, Glass, Intensive, PreRinse, Quiet)),

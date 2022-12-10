@@ -1,6 +1,8 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities.model
 
-enum class RangeFunction(val functionName: String, private val allowedUnits: (RangeUnit?) -> Boolean) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class RangeFunction(@get:JsonValue val functionName: String, private val allowedUnits: (RangeUnit?) -> Boolean) {
     Brightness("brightness", RangeUnit.isPercentPredicate),
     Channel("channel", RangeUnit.isNoUnitPredicate),
     Humidity("humidity",RangeUnit.isPercentPredicate),

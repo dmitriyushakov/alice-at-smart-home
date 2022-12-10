@@ -21,7 +21,7 @@ abstract class EventProperty: BaseProperty() {
         put("retrievable", retrievable)
         put("reportable", reportable)
 
-        putObject("properties") {
+        putObject("parameters") {
             val instance = this@EventProperty.instance
             val events = this@EventProperty.events
             if (events.isEmpty()) invalidValue("Event property should have at least one event!")

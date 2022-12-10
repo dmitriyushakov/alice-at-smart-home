@@ -1,6 +1,8 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities.model
 
-enum class ToggleFunction(val functionName: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class ToggleFunction(@get:JsonValue val functionName: String) {
     Backlight("backlight"),
     ControlsLocked("controls_locked"),
     Ionization("ionization"),

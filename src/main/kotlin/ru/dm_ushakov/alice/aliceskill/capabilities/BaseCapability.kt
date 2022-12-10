@@ -1,6 +1,7 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities
 
 import com.fasterxml.jackson.databind.JsonNode
+import org.slf4j.LoggerFactory
 import ru.dm_ushakov.alice.aliceskill.config.CustomEntity
 import ru.dm_ushakov.alice.aliceskill.config.UserHome
 import ru.dm_ushakov.alice.aliceskill.devices.Device
@@ -11,6 +12,8 @@ import ru.dm_ushakov.alice.aliceskill.notifications.NotificationEmitter
 import ru.dm_ushakov.alice.aliceskill.util.json.*
 import ru.dm_ushakov.alice.aliceskill.util.onceInit
 import kotlin.reflect.KClass
+
+private val logger = LoggerFactory.getLogger(BaseCapability::class.java)
 
 abstract class BaseCapability: DeviceCapability {
     private val notificationSender = BasicNotificationEmitter<DeviceCapability>()
@@ -31,8 +34,10 @@ abstract class BaseCapability: DeviceCapability {
         try {
             executeChangingCapabilityState(changeState)
         } catch (ex: DeviceException) {
+            logger.error("Device error occurred during change capability state.", ex)
             deviceException = ex
         } catch (ex: Exception) {
+            logger.error("Unknown error occurred during change capability state.", ex)
             val message = "Internal capability exception - " + ex.stackTraceToString()
             deviceException = DeviceException(DeviceErrorType.InternalError, message)
         }

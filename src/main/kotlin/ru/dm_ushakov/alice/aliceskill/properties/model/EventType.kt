@@ -1,6 +1,8 @@
 package ru.dm_ushakov.alice.aliceskill.properties.model
 
-enum class EventType(val eventTypeName: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class EventType(@get:JsonValue val eventTypeName: String) {
     Tilt("tilt"),
     Fall("fall"),
     Vibration("vibration"),

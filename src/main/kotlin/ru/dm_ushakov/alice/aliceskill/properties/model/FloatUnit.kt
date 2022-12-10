@@ -1,6 +1,8 @@
 package ru.dm_ushakov.alice.aliceskill.properties.model
 
-enum class FloatUnit(val unitName: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class FloatUnit(@get:JsonValue val unitName: String) {
     Ampere("unit.ampere"),
     Watt("unit.watt"),
     Volt("unit.volt"),

@@ -1,9 +1,10 @@
 package ru.dm_ushakov.alice.aliceskill.properties.model
 
+import com.fasterxml.jackson.annotation.JsonValue
 import ru.dm_ushakov.alice.aliceskill.error.invalidValue
 import ru.dm_ushakov.alice.aliceskill.properties.model.EventType.*
 
-enum class EventFunction(val functionName: String, val defaultEventType: EventType, val allowedEventTypes: List<EventType>) {
+enum class EventFunction(@get:JsonValue val functionName: String, val defaultEventType: EventType, val allowedEventTypes: List<EventType>) {
     Vibration("vibration", Tilt, listOf(Tilt, Fall, EventType.Vibration)),
     Open("open", Closed, listOf(Opened, Closed)),
     Button("button", Click, listOf(Click, DoubleClick, LongPress)),

@@ -1,6 +1,8 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities.model
 
-enum class Scene(val sceneName: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class Scene(@get:JsonValue val sceneName: String) {
     Alarm("alarm"),
     Alice("alice"),
     Candle("candle"),

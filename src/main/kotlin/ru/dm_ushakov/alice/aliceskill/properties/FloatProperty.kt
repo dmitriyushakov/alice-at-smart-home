@@ -20,9 +20,9 @@ abstract class FloatProperty: BaseProperty() {
         put("retrievable", retrievable)
         put("reportable", reportable)
 
-        putObject("properties") {
+        putObject("parameters") {
             put("instance", instance.functionName)
-            unit?.let { put("unit", it.unitName) }
+            put("unit", (unit ?: instance.defaultUnit).unitName)
         }
     }
 

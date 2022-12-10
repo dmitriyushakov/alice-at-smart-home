@@ -21,7 +21,7 @@ class MQTTModeCapability(
 
     private val broker: MQTTBroker by lazy { getMqttBroker(brokerId) }
 
-    override var state: ModeCapabilityState = ModeCapabilityState(instance, instance.recommendedModes.first())
+    override var state: ModeCapabilityState = ModeCapabilityState(instance, modes.first())
         set(value) {
             val payload = stateMapping.convertFromState(value, this)
             broker.publish(sendStateTopic, payload)

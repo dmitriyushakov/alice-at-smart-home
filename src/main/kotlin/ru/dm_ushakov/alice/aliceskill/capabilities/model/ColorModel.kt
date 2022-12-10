@@ -1,6 +1,8 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities.model
 
-enum class ColorModel(val colorModelName: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class ColorModel(@get:JsonValue val colorModelName: String) {
     HSV("hsv"),
     RGB("rgb");
 

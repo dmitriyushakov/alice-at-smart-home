@@ -1,6 +1,8 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities.model
 
-enum class RangeUnit(val rangeUnitName: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class RangeUnit(@get:JsonValue val rangeUnitName: String) {
     Percent("unit.percent"),
     TemperatureCelsius("unit.temperature.celsius"),
     TemperatureKelvin("unit.temperature.kelvin");

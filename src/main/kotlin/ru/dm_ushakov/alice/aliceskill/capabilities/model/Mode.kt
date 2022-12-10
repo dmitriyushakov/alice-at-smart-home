@@ -1,6 +1,8 @@
 package ru.dm_ushakov.alice.aliceskill.capabilities.model
 
-enum class Mode(val modeName: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class Mode(@get:JsonValue val modeName: String) {
     Auto("auto"),
     Eco("eco"),
     Turbo("turbo"),
